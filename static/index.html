@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试websocket</title>
+</head>
+<body>
+
+</body>
+<script src="/static/js/socket.io.js"></script>
+<script>
+    window.onload = () => {
+        const log = console.log;
+        const socket = io('/', {
+            query: {
+                id: 1,
+            },
+        })
+        socket.on('open', () => {
+            console.log('connecting')
+        })
+        socket.on('error', () => {
+            log('error')
+        })
+        socket.on('online', msg => {
+            log('#online,', msg);
+        });
+        socket.on('connect', () => {
+            const id = socket.id;
+
+            log('#connect,', id, socket);
+            const person = {
+                name: 'JayHoo'
+            }
+            socket.emit('chat', JSON.stringify(person))
+            // 监听自身 id 以实现 p2p 通讯
+            socket.on(id, msg => {
+                log('#receive,', msg);
+            });
+            socket.on('res', msg => {
+                log('#online,', msg);
+            });
+        });
+        // 系统事件
+        socket.on('disconnect', msg => {
+            log('#disconnect', msg);
+        });
+
+
+        socket.on('disconnecting', () => {
+            log('#disconnecting');
+        });
+    }
+</script>
+</html>

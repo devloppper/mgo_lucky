@@ -1,0 +1,113 @@
+<!--创建房间的页面-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static//css/bootstrap.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/user/sign.css"/>
+    <title>扫码签到(开发)</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm left">
+            <!--房间信息 #ID NAME-->
+            <span class="title">#{{room.id}} {{room.name}}</span>
+            <!--房间二维码-->
+            <img class="image" src="/sign/image" alt="二维码">
+        </div>
+        <div class="col-sm right" id="app">
+            <span class="banner">
+                已签到人员
+            </span>
+            <div class="users">
+                <div class="user" title="双击删除" @dblclick="deleteOne(item.id)" v-for="item in list">
+                    <span class="name" title="18:30:20">{% raw %}{{item.name}}{% endraw %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/socket.io.js"></script>
+<script>
+    let socket = null;
+    let roomId = null;
+    const message_type = {
+        ALL: "all",
+        ADD_ONE: "addOne",
+        DEL_ONE: "delOne",
+        MOD_ONE: "modOne"
+    }
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            list: [{name: '大娃'}, {name: '二娃'}, {name: '三娃'}, {name: '四娃'}, {name: '五娃'}, {name: '六娃'}, {name: '七娃'},]
+        },
+        mounted: () => {
+            const urlParameters = location.search;
+            if (!urlParameters) {
+                return alert('尚无房间')
+            }
+            const start = urlParameters.indexOf('id=') + 3;
+            let end = urlParameters.length;
+            if (urlParameters.includes('&')) {
+                end = urlParameters.indexOf('&')
+            }
+            roomId = urlParameters.substring(start, end);
+            if (!roomId) {
+                return alert('尚无房间')
+            }
+            initSocket(roomId);
+        },
+        methods: {
+            deleteOne(id) {
+                socket.emit('delete', {
+                    id,
+                    roomId
+                });
+            }
+        }
+    })
+
+    function initSocket(id) {
+        socket = io('/', {
+            query: {
+                id
+            }
+        })
+        socket.on('connect', function () {
+            socket.on(message_type.ALL, (message) => {
+                console.log(`type=${message_type.ALL}, message=${message}`)
+                vue.$data.list = message;
+            })
+
+            socket.on(message_type.ADD_ONE, (message) => {
+                console.log(`type=${message_type.ADD_ONE}, message=${message}`)
+                if (message) {
+                    vue.$data.list.push(message);
+                }
+            })
+
+            socket.on(message_type.DEL_ONE, (message) => {
+                console.log(`type=${message_type.DEL_ONE}, message=${JSON.stringify(message)}`)
+                const {id} = message;
+                if (id) {
+                    for (let i = 0; i < vue.$data.list.length; i++) {
+                        if (vue.$data.list[i]["id"] === id) {
+                            vue.$data.list.splice(i, 1);
+                            i--;
+                        }
+
+                    }
+                }
+            })
+        });
+        socket.emit('registry', {
+            id
+        });
+    }
+</script>
+</html>

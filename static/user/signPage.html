@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/static/css/bootstrap.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/user/signPage.css"/>
+    <title>请签到</title>
+</head>
+<body>
+<div class="wrapper">
+    <div class="logo"></div>
+    <div class="room">#{{room.id}} {{room.name}}</div>
+    <!--<div class="sign">签到</div>-->
+    <form class="form" id="form" action="/sign/up">
+        <div class="group">
+            <label for="name">姓名
+                <input id="name" required type="text" placeholder="姓名">
+            </label>
+        </div>
+        <div class="group">
+            <button type="submit">签到</button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    const form = document.getElementById('form');
+    const input = document.getElementById('name');
+    let roomId;
+    window.onload = () => {
+        const urlParameters = location.search;
+        if (!urlParameters) {
+            return alert('尚无房间')
+        }
+        const start = urlParameters.indexOf('id=') + 3;
+        let end = urlParameters.length;
+        if (urlParameters.includes('&')) {
+            end = urlParameters.indexOf('&')
+        }
+        roomId = urlParameters.substring(start, end);
+        if (!roomId || isNaN(roomId)) {
+            return alert('二维码有毒 请重新扫描')
+        }
+    }
+    form.onsubmit = (e) => {
+        e.preventDefault();
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const rs = JSON.parse(xhr.responseText)
+                if (!rs) {
+                    alert('操作失败')
+                } else if (rs.code !== 200) {
+                    alert(rs.msg)
+                }
+            }
+        }
+        xhr.open('POST', '/sign/up', true);
+        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8")
+        xhr.send(JSON.stringify({
+            id: Number(roomId),
+            name: input.value,
+        }))
+        return false;
+    }
+</script>
+</html>
+
+<!--
+<div class="group">
+            <label for="1">一等
+                <input id="1" type="text"  min="0" max="100" placeholder="幸运数字A">
+            </label>
+        </div>
+        <div class="group">
+            <label for="2">二等
+                <input id="2" type="text"  min="0" max="100" placeholder="幸运数字B">
+            </label>
+        </div>
+        <div class="group">
+            <label for="3">三等
+                <input id="3" type="text"  min="0" max="100" placeholder="幸运数字C">
+            </label>
+        </div>
+        <div class="group">
+            <label for="4">四等
+                <input id="4" type="text"  min="0" max="100" placeholder="幸运数字D">
+            </label>
+        </div>
+-->

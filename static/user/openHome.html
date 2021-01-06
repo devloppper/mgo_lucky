@@ -1,0 +1,41 @@
+<!--创建房间的页面-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    -->
+    <link rel="stylesheet" href="/static/user/openHome.css"/>
+    <title>创建房间</title>
+</head>
+<body>
+
+<div class="input-area">
+    <div class="group">
+        <input id="input" type="text" class="input" placeholder="房间名称">
+        <button id="button" class="button">创建</button>
+    </div>
+</div>
+
+
+</body>
+<script>
+    const button = document.getElementById('button');
+    const input = document.getElementById('input');
+    button.onclick = () => {
+        const value = input.value
+        if (!value) {
+            alert('房间名不要为空')
+        } else {
+            if (value.length > 16) {
+                alert('房间名不能长于16个字')
+                input.value = ''
+            } else {
+               window.location.href = `/sign/room/open?name=${input.value}`
+            }
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,86 @@
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+/ / background: red;
+    position: fixed;
+}
+
+.container,
+.row,
+.left,
+.right {
+    height: 100%;
+}
+
+.left {
+    /*background: yellow;*/
+    text-align: center;
+}
+
+.right {
+    background: #ababab;
+    padding-top: 20px;
+    text-align: center;
+}
+.right .users {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+.right .user {
+    margin: 5px 10px 5px 10px;
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    background: rgba(64, 163, 147, .3);
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.right .user:hover {
+    color: #ababab;
+    background: rgba(9, 175, 151, 0.3);
+    border: 1px solid #fff;
+}
+
+.right .user .name {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.right .banner {
+    margin-top: 40px;
+    font-weight: bold;
+    font-size: 24px;
+    color: #fff;
+    letter-spacing: 2px;
+}
+.left .title {
+    display: block;
+    margin-top: 30%;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.left .image {
+    margin-top: 20px;
+    display: block;
+    position: relative;
+    left: 50%;
+    margin-left: -150px;
+    width: 300px;
+    height: 300px;
+}
