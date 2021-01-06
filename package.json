@@ -36,7 +36,8 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "docker_start": "egg-bin dev --sticky"
   },
   "ci": {
     "version": "10"
