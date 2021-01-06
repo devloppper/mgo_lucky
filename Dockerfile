@@ -8,7 +8,7 @@ ENV RUN_ENV=local
 COPY ./app      /data/app/
 COPY ./config   /data/config/
 COPY ./static   /data/static/
-COPY package.json /data/package.json
+COPY ./package.json /data/package.json
 
 RUN cd /data/
 RUN npm config set registry https://registry.npm.taobao.org
