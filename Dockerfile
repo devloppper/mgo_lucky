@@ -5,16 +5,15 @@ MAINTAINER JayHoo <jayhoozone@163.com>
 ENV RUN_ENV=local
 
 
-COPY ./app      /data/app/
-COPY ./config   /data/config/
-COPY ./static   /data/static/
-COPY ./package.json /data/package.json
+COPY ./app      /app/
+COPY ./config   /config/
+COPY ./static   /static/
+COPY ./package.json /package.json
 
-RUN cd /data/
 RUN npm config set registry https://registry.npm.taobao.org
 RUN npm install
 
-WORKDIR /data/
+WORKDIR /
 
 RUN mkdir -p /data/logs/ \
 RUN echo "Asia/Shanghai" > /etc/timezone
