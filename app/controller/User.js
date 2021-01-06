@@ -18,7 +18,8 @@ class UserCtrl extends BaseCtrl {
             return this.response(this.Response.ROOM_NOT_EXIST, {});
         }
         await this.ctx.render('static/user/sign', {
-            room
+            room,
+            id
         })
     }
 
@@ -100,7 +101,7 @@ class UserCtrl extends BaseCtrl {
      */
     async loginQr() {
         const {id} = this.ctx.request.query;
-        const qrCode = qrImage.image(`https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1997413355,496468449&fm=26&gp=0.jpg`, {
+        const qrCode = qrImage.image(`http://www.apprendre.cn/sign/to/page?id=${id}`, {
             ec_level: 'H'
         })
         const {ctx} = this;

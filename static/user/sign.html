@@ -15,7 +15,7 @@
             <!--房间信息 #ID NAME-->
             <span class="title">#{{room.id}} {{room.name}}</span>
             <!--房间二维码-->
-            <img class="image" src="/sign/image" alt="二维码">
+            <img class="image" src="/sign/image?id={{id}}" alt="二维码">
         </div>
         <div class="col-sm right" id="app">
             <span class="banner">
@@ -44,7 +44,7 @@
     const vue = new Vue({
         el: '#app',
         data: {
-            list: [{name: '大娃'}, {name: '二娃'}, {name: '三娃'}, {name: '四娃'}, {name: '五娃'}, {name: '六娃'}, {name: '七娃'},]
+            list: []
         },
         mounted: () => {
             const urlParameters = location.search;
