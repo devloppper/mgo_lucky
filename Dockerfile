@@ -10,9 +10,9 @@ COPY ./config   /data/config/
 COPY ./static   /data/static/
 COPY package.json /data/package.json
 
+RUN cd /data/
 RUN npm config set registry https://registry.npm.taobao.org
 RUN npm install
-
 
 WORKDIR /data/
 
